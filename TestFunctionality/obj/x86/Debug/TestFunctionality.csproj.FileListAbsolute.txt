@@ -1,0 +1,11 @@
+E:\Development\DrawingExtensions\TestFunctionality\bin\Debug\TestFunctionality.exe
+E:\Development\DrawingExtensions\TestFunctionality\bin\Debug\TestFunctionality.pdb
+E:\Development\DrawingExtensions\TestFunctionality\bin\Debug\DrawingExtensions.dll
+E:\Development\DrawingExtensions\TestFunctionality\bin\Debug\DrawingExtensions.pdb
+E:\Development\DrawingExtensions\TestFunctionality\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Development\DrawingExtensions\TestFunctionality\obj\x86\Debug\TestFunctionality.Properties.Resources.resources
+E:\Development\DrawingExtensions\TestFunctionality\obj\x86\Debug\GenerateResource.read.1.tlog
+E:\Development\DrawingExtensions\TestFunctionality\obj\x86\Debug\GenerateResource.write.1.tlog
+E:\Development\DrawingExtensions\TestFunctionality\obj\x86\Debug\TestFunctionality.exe
+E:\Development\DrawingExtensions\TestFunctionality\obj\x86\Debug\TestFunctionality.pdb
+E:\Development\DrawingExtensions\TestFunctionality\obj\x86\Debug\TestFunctionality.DisplayForm.resources
