@@ -1,0 +1,5 @@
+E:\Development\DrawingExtensions\DrawingExtensions\bin\Debug\DrawingExtensions.dll
+E:\Development\DrawingExtensions\DrawingExtensions\bin\Debug\DrawingExtensions.pdb
+E:\Development\DrawingExtensions\DrawingExtensions\obj\Debug\ResolveAssemblyReference.cache
+E:\Development\DrawingExtensions\DrawingExtensions\obj\Debug\DrawingExtensions.dll
+E:\Development\DrawingExtensions\DrawingExtensions\obj\Debug\DrawingExtensions.pdb
