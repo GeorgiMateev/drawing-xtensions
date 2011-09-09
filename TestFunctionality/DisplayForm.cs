@@ -33,22 +33,30 @@ namespace TestFunctionality
 
         void DisplayForm_Paint(object sender, PaintEventArgs e)
         {
-          // GraphicsObject.SmoothFillRectangle(new SolidBrush(Color.AliceBlue),new Point(40,40),new Size(50,40), Direction.Right, 1000);
-          // GraphicsObject.SmoothFillRectangle(new SolidBrush(Color.Black), new Point(90, 40), new Size(50, 40), Direction.Right, 1000);
-           /* GraphicsObject.DrawLine(new Pen(Color.Black,1.0F),50,40,50,80);
-            GraphicsObject.DrawLine(new Pen(Color.Black, 1.0F), 51, 40, 51, 80);
-            GraphicsObject.DrawLine(new Pen(Color.Black, 1.8F), 50, 40, 50, 80);*/
+          
 
-           GraphicsObject.SmoothFillRectangle
+           GraphicsObject.SmoothFillRectangleMultithreading
               (new SolidBrush(Color.AliceBlue), new Point(10, 10), new Size(50, 40), Direction.Right, 8000);
-           GraphicsObject.SmoothFillRectangle
+          /* GraphicsObject.SmoothFillRectangleMultithreading
               (new SolidBrush(Color.AliceBlue), new Point(60, 90), new Size(50, 40), Direction.Down, 20000);
-           GraphicsObject.SmoothFillRectangle
+           GraphicsObject.SmoothFillRectangleMultithreading
               (new SolidBrush(Color.Black), new Point(100, 100), new Size(50, 40), Direction.Left, 10000);
-           GraphicsObject.SmoothFillRectangle
+           GraphicsObject.SmoothFillRectangleMultithreading
               (new SolidBrush(Color.AliceBlue), new Point(20, 50), new Size(50, 40), Direction.Up, 1000);
-           GraphicsObject.SmoothFillRectangle
-              (new SolidBrush(Color.AliceBlue), new Point(90, 70), new Size(50, 40), Direction.Right, 5000);
+           GraphicsObject.SmoothFillRectangleMultithreading
+              (new SolidBrush(Color.AliceBlue), new Point(90, 70), new Size(50, 40), Direction.Right, 5000);*/
+          lock(GraphicsObject)
+          {
+            GraphicsObject.DrawLine(new Pen(Color.Black), 100, 100, 150, 100);
+          }
+          lock (GraphicsObject)
+          {
+              GraphicsObject.SmoothFillRectangleNoThreading(new SolidBrush(Color.Red), new Point(200, 200), new Size(100, 100), Direction.Up, 10000);
+          }
+          lock (GraphicsObject)
+          {
+              GraphicsObject.SmoothFillRectangleNoThreading(new SolidBrush(Color.Red), new Point(200, 300), new Size(100, 100), Direction.Down, 5000);
+          }
          
         }
 
@@ -61,15 +69,15 @@ namespace TestFunctionality
 
         void pictureBoxGraphic_Paint(object sender, PaintEventArgs e)
         {
-            GraphicsObject.SmoothFillRectangle
+            GraphicsObject.SmoothFillRectangleMultithreading
                 (new SolidBrush(Color.AliceBlue), new Point(10, 10), new Size(50, 40), Direction.Right, 8000);
-            GraphicsObject.SmoothFillRectangle
+            GraphicsObject.SmoothFillRectangleMultithreading
                (new SolidBrush(Color.AliceBlue), new Point(60, 90), new Size(50, 40), Direction.Right, 20000);
-            GraphicsObject.SmoothFillRectangle
+            GraphicsObject.SmoothFillRectangleMultithreading
                (new SolidBrush(Color.Black), new Point(100, 100), new Size(50, 40), Direction.Left, 10000);
-            GraphicsObject.SmoothFillRectangle
+            GraphicsObject.SmoothFillRectangleMultithreading
                (new SolidBrush(Color.AliceBlue), new Point(20, 50), new Size(50, 40), Direction.Right, 1000);
-            GraphicsObject.SmoothFillRectangle
+            GraphicsObject.SmoothFillRectangleMultithreading
                (new SolidBrush(Color.AliceBlue), new Point(90, 70), new Size(50, 40), Direction.Right, 5000);
         }
 
