@@ -188,8 +188,7 @@ namespace DrawingExtensions
             }
         }
 
-        
-        private class RectangleToRight
+        private abstract class GivenRectangle
         {
             private Graphics graphicsObject;
             private Pen pen;
@@ -197,266 +196,209 @@ namespace DrawingExtensions
             private Size size;
             private System.Windows.Forms.Timer drawTimer;
             private int count;
+
+            public int Count
+            {
+                get { return count; }
+                set { count = value; }
+            }
+
+            public System.Windows.Forms.Timer DrawTimer
+            {
+                get { return drawTimer; }
+                set { drawTimer = value; }
+            }
+
+            public Size Size
+            {
+                get { return size; }
+                set { size = value; }
+            }
+
+            public Point Location
+            {
+                get { return location; }
+                set { location = value; }
+            }
+
+            public Pen Pen
+            {
+                get { return pen; }
+                set { pen = value; }
+            }
+            public Graphics GraphicsObject
+            {
+                get { return graphicsObject; }
+                set { graphicsObject = value; }
+            }
+            public GivenRectangle(Graphics graphic,Pen pen,Point location,Size size,int time)
+            {
+                               
+            }
+            public virtual void DrawRectangle()
+            {
+            }
+        }
+
+        private class RectangleToRight : GivenRectangle
+        {
             
-            public System.Windows.Forms.Timer DrawTimer
-            {
-                get { return drawTimer; }
-                set { drawTimer = value; }
-            }
-
-            public Size Size
-            {
-                get { return size; }
-                set { size = value; }
-            }
-
-            public Point Location
-            {
-                get { return location; }
-                set { location = value; }
-            }
-
-            public Pen Pen
-            {
-                get { return pen; }
-                set { pen = value; }
-            }
-            public Graphics GraphicsObject
-            {
-                get { return graphicsObject; }
-                set { graphicsObject = value; }
-            }
             public RectangleToRight(Graphics graphicsObject, Pen pen, Point location, Size size, int time)
+                :base(graphicsObject, pen,location,size,time)
             {
-                double msPerPixel = time / size.Width;
-                int timeForPixel = Convert.ToInt32(Math.Floor(msPerPixel));
-                this.graphicsObject = graphicsObject;
-                this.pen = pen;
-                this.location = location;
-                this.size = size;
-                this.drawTimer = new System.Windows.Forms.Timer();
-                this.drawTimer.Interval = timeForPixel;
-                this.drawTimer.Tick += new EventHandler(drawTimer_Tick);
-                this.drawTimer.Start();
+                double msPerPixel = (double)time / size.Width;
+                int timeForPixel = Convert.ToInt32(Math.Round(msPerPixel));
+                if (timeForPixel == 0) timeForPixel = 1;
+                this.GraphicsObject = graphicsObject;
+                this.Pen = pen;
+                this.Location = location;
+                this.Size = size;
+                this.DrawTimer = new System.Windows.Forms.Timer();
+                this.DrawTimer.Interval = timeForPixel;
+                this.DrawTimer.Tick += new EventHandler(drawTimer_Tick);
+                this.DrawTimer.Start();
             }
 
             void drawTimer_Tick(object sender, EventArgs e)
             {
+               this.DrawRectangle();
+            }
+
+            public override void DrawRectangle()
+            {
                 int drawPointUpperY = this.Location.Y;
                 int drawPointDownY = this.Location.Y + this.Size.Height - 1;
-                int drawPointX = this.Location.X + count;
-                
-                lock (GraphicsObject)
+                int drawPointX = this.Location.X + this.Count;
+
+                lock (this.GraphicsObject)
                 {
-                    graphicsObject.DrawLine(pen, drawPointX, drawPointUpperY, drawPointX, drawPointDownY);
+                    this.GraphicsObject.DrawLine(Pen, drawPointX, drawPointUpperY, drawPointX, drawPointDownY);
                 }
-                count++;
-                if (count==this.size.Width)
+                Count++;
+                if (Count == this.Size.Width)
                 {
                     this.DrawTimer.Stop();
                 }
             }
         }
 
-        private class RectangleToLeft
+        private class RectangleToLeft : GivenRectangle
         {
-            Graphics graphicsObject;
-            Pen pen;
-            Point location;
-            Size size;
-            System.Windows.Forms.Timer drawTimer;
-            int count;
-
-            public System.Windows.Forms.Timer DrawTimer
-            {
-                get { return drawTimer; }
-                set { drawTimer = value; }
-            }
-
-            public Size Size
-            {
-                get { return size; }
-                set { size = value; }
-            }
-
-            public Point Location
-            {
-                get { return location; }
-                set { location = value; }
-            }
-
-            public Pen Pen
-            {
-                get { return pen; }
-                set { pen = value; }
-            }
-            public Graphics GraphicsObject
-            {
-                get { return graphicsObject; }
-                set { graphicsObject = value; }
-            }
+           
             public RectangleToLeft(Graphics graphicsObject, Pen pen, Point location, Size size, int time)
+                : base(graphicsObject, pen, location, size, time)
             {
-                double msPerPixel = time / size.Width;
-                int timeForPixel = Convert.ToInt32(Math.Floor(msPerPixel));
-                this.graphicsObject = graphicsObject;
-                this.pen = pen;
-                this.location = location;
-                this.size = size;
-                this.drawTimer = new System.Windows.Forms.Timer();
-                this.drawTimer.Interval = timeForPixel;
-                this.drawTimer.Tick += new EventHandler(drawTimer_Tick);
-                this.drawTimer.Start();
+                double msPerPixel =(double)time/size.Width;
+                int timeForPixel = Convert.ToInt32(Math.Round(msPerPixel));
+                if (timeForPixel == 0) timeForPixel = 1;
+                this.GraphicsObject = graphicsObject;
+                this.Pen = pen;
+                this.Location = location;
+                this.Size = size;
+                this.DrawTimer = new System.Windows.Forms.Timer();
+                this.DrawTimer.Interval = timeForPixel;
+                this.DrawTimer.Tick += new EventHandler(drawTimer_Tick);
+                this.DrawTimer.Start();
             }
 
             void drawTimer_Tick(object sender, EventArgs e)
+            {
+                this.DrawRectangle();
+            }
+
+            public  override void DrawRectangle()
             {
                 int drawPointUpperY = this.Location.Y;
                 int drawPointDownY = this.Location.Y + this.Size.Height - 1;
-                int drawPointX = this.Location.X + this.size.Width-1-count;                
-                lock (GraphicsObject)
-                {
-                    graphicsObject.DrawLine(pen, drawPointX, drawPointUpperY, drawPointX, drawPointDownY);
-                }
-                count++;
-                if (count == this.size.Width)
+                int drawPointX = this.Location.X + this.Size.Width - 1 - Count;
+                
+                    GraphicsObject.DrawLine(Pen, drawPointX, drawPointUpperY, drawPointX, drawPointDownY);
+                
+                Count++;
+                if (Count == this.Size.Width)
                 {
                     this.DrawTimer.Stop();
                 }
             }
         }
 
-        private class RectangleToDown
+        private class RectangleToDown : GivenRectangle
         {
-            private Graphics graphicsObject;
-            private Pen pen;
-            private Point location;
-            private Size size;
-            private System.Windows.Forms.Timer drawTimer;
-            private int count;
-
-            public System.Windows.Forms.Timer DrawTimer
-            {
-                get { return drawTimer; }
-                set { drawTimer = value; }
-            }
-
-            public Size Size
-            {
-                get { return size; }
-                set { size = value; }
-            }
-
-            public Point Location
-            {
-                get { return location; }
-                set { location = value; }
-            }
-
-            public Pen Pen
-            {
-                get { return pen; }
-                set { pen = value; }
-            }
-            public Graphics GraphicsObject
-            {
-                get { return graphicsObject; }
-                set { graphicsObject = value; }
-            }
+            
             public RectangleToDown(Graphics graphicsObject, Pen pen, Point location, Size size, int time)
+                : base(graphicsObject, pen, location, size, time)
             {
-                double msPerPixel = time / size.Width;
-                int timeForPixel = Convert.ToInt32(Math.Floor(msPerPixel));
-                this.graphicsObject = graphicsObject;
-                this.pen = pen;
-                this.location = location;
-                this.size = size;
-                this.drawTimer = new System.Windows.Forms.Timer();
-                this.drawTimer.Interval = timeForPixel;
-                this.drawTimer.Tick += new EventHandler(drawTimer_Tick);
-                this.drawTimer.Start();
+                double msPerPixel = (double)time / size.Height;
+                int timeForPixel = Convert.ToInt32(Math.Round(msPerPixel));
+                if (timeForPixel == 0) timeForPixel = 1;
+                this.GraphicsObject = graphicsObject;
+                this.Pen = pen;
+                this.Location = location;
+                this.Size = size;
+                this.DrawTimer = new System.Windows.Forms.Timer();
+                this.DrawTimer.Interval = timeForPixel;
+                this.DrawTimer.Tick += new EventHandler(drawTimer_Tick);
+                this.DrawTimer.Start();
             }
 
             void drawTimer_Tick(object sender, EventArgs e)
             {
+                this.DrawRectangle();
+            }
+
+            public override void DrawRectangle()
+            {
                 int drawPointLeftX = this.Location.X;
                 int drawPointRightX = this.Location.X + this.Size.Width - 1;
-                int drawPointY = this.Location.Y + count;
+                int drawPointY = this.Location.Y + Count;
 
-                lock (GraphicsObject)
+                lock (this.GraphicsObject)
                 {
-                    graphicsObject.DrawLine(pen, drawPointLeftX,drawPointY,drawPointRightX,drawPointY);
+                    GraphicsObject.DrawLine(Pen, drawPointLeftX, drawPointY, drawPointRightX, drawPointY);
                 }
-                count++;
-                if (count == this.size.Height)
+                Count++;
+                if (Count == this.Size.Height)
                 {
                     this.DrawTimer.Stop();
                 }
             }
         }
-        private class RectangleToUp
+        private class RectangleToUp : GivenRectangle
         {
-            private Graphics graphicsObject;
-            private Pen pen;
-            private Point location;
-            private Size size;
-            private System.Windows.Forms.Timer drawTimer;
-            private int count;
-
-            public System.Windows.Forms.Timer DrawTimer
-            {
-                get { return drawTimer; }
-                set { drawTimer = value; }
-            }
-
-            public Size Size
-            {
-                get { return size; }
-                set { size = value; }
-            }
-
-            public Point Location
-            {
-                get { return location; }
-                set { location = value; }
-            }
-
-            public Pen Pen
-            {
-                get { return pen; }
-                set { pen = value; }
-            }
-            public Graphics GraphicsObject
-            {
-                get { return graphicsObject; }
-                set { graphicsObject = value; }
-            }
+           
             public RectangleToUp(Graphics graphicsObject, Pen pen, Point location, Size size, int time)
+                : base(graphicsObject, pen, location, size, time)
             {
-                double msPerPixel = time / size.Width;
-                int timeForPixel = Convert.ToInt32(Math.Floor(msPerPixel));
-                this.graphicsObject = graphicsObject;
-                this.pen = pen;
-                this.location = location;
-                this.size = size;
-                this.drawTimer = new System.Windows.Forms.Timer();
-                this.drawTimer.Interval = timeForPixel;
-                this.drawTimer.Tick += new EventHandler(drawTimer_Tick);
-                this.drawTimer.Start();
+                double msPerPixel = (double)time / size.Height;
+                int timeForPixel = Convert.ToInt32(Math.Round(msPerPixel));
+                if (timeForPixel == 0) timeForPixel = 1;
+                this.GraphicsObject = graphicsObject;
+                this.Pen = pen;
+                this.Location = location;
+                this.Size = size;
+                this.DrawTimer = new System.Windows.Forms.Timer();
+                this.DrawTimer.Interval = timeForPixel;
+                this.DrawTimer.Tick += new EventHandler(drawTimer_Tick);
+                this.DrawTimer.Start();
             }
 
             void drawTimer_Tick(object sender, EventArgs e)
             {
+                this.DrawRectangle();
+            }
+
+            public override  void DrawRectangle()
+            {
                 int drawPointLeftX = this.Location.X;
                 int drawPointRightX = this.Location.X + this.Size.Width - 1;
-                int drawPointY = this.Location.Y + this.size.Height-1- count;
+                int drawPointY = this.Location.Y + this.Size.Height - 1 - Count;
 
-                lock (GraphicsObject)
+                lock (this.GraphicsObject)
                 {
-                    graphicsObject.DrawLine(pen, drawPointLeftX, drawPointY, drawPointRightX, drawPointY);
+                    GraphicsObject.DrawLine(Pen, drawPointLeftX, drawPointY, drawPointRightX, drawPointY);
                 }
-                count++;
-                if (count == this.size.Height)
+                Count++;
+                if (Count == this.Size.Height)
                 {
                     this.DrawTimer.Stop();
                 }
